@@ -1,33 +1,28 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './modules/material/material.module';
 import { HttpClientModule } from '@angular/common/http';
-import { ListaAlumnosComponent } from './components/lista-alumnos/lista-alumnos.component';
-import { AbmAlumnosComponent } from './components/abm-alumnos/abm-alumnos.component';
-import { NavbarComponent } from './components/_navegation/navbar/navbar.component';
-import { FontSize20Directive } from './shared/directives/font-size-20.directive';
-import { NombreApellidoPipe } from './shared/pipes/nombre-apellido.pipe';
+
+import { MaterialModule } from './modules/material.module';
+import { AppRoutingModule } from './app-routing.module';
+import { CoreComponentsModule } from './core/components/core-components.module';
+import { AppComponent } from './app.component';
+import { LayoutComponent } from './features/components/layout/layout.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    ListaAlumnosComponent,
-    AbmAlumnosComponent,
-    NavbarComponent,
-    FontSize20Directive,
-    NombreApellidoPipe
+    LayoutComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MaterialModule,
-    HttpClientModule
+    AppRoutingModule,
+    CoreComponentsModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

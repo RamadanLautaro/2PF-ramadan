@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Alumno } from '../../models/alumno.model';
+import { MaterialModule } from '../../../../modules/material.module';
+import { Alumno } from '../../../../models/alumno.model';
 
 const listaAlumnos: Alumno[] = [
   {legajo: 25239, nombre: 'Lautaro', apellido: 'Ramadán', edad: 23, email: 'ramadanlautaro@gmail.com'},

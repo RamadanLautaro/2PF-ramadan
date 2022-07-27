@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Alumno } from '../../models/alumno.model';
+import { Alumno } from '../../../../models/alumno.model';
 
 @Component({
   selector: 'app-abm-alumnos',

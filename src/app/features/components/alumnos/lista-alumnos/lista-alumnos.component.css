@@ -30,3 +30,8 @@
 .overflow-x-hidden{
     overflow-x: hidden;
 }
+
+.table_container {
+    height: 500px;
+    max-height: 500px;
+}
