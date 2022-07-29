@@ -4,4 +4,5 @@ export interface Alumno {
     apellido: string;
     edad: number;
     email: string;
+    aprobado: boolean;
   }

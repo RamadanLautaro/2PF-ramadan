@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [],
@@ -26,10 +27,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatFormFieldModule,
     MatDialogModule,
     MatTableModule,
-    MatFormFieldModule,
     MatSidenavModule,
     ReactiveFormsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatRadioModule
   ]
 })
 export class MaterialModule { }
