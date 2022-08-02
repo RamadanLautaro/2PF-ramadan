@@ -17,7 +17,7 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
   listaAlumnos: Alumno[] = [];
   dataSource = this.listaAlumnos;
-  displayedColumns: string[] = ['legajo', 'nombre-apellido', 'edad', 'email', 'aprobado', 'acciones'];
+  displayedColumns: string[] = ['legajo', 'nombre-apellido', 'edad', 'email', 'acciones'];
 
 
   constructor(private alumnoService: AlumnoService) {}
@@ -30,65 +30,58 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-
+  
   //FORMULARIO ALUMNO: AGREGAR
   formularioAgregarAlumno = new FormGroup({
+    id: new FormControl(0, [Validators.required]),
     legajo: new FormControl(null, [Validators.required]),
     nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
     apellido: new FormControl('', [Validators.required, Validators.minLength(3)]),
     edad: new FormControl(null, [Validators.required, Validators.max(110)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    aprobado: new FormControl(false),
+    email: new FormControl('', [Validators.required, Validators.email])
   })
 
    //FORMULARIO ALUMNO: EDITAR
    formularioEditarAlumno = new FormGroup({
-    index: new FormControl(0, [Validators.required]),
+    id: new FormControl(0, [Validators.required]),
     legajo: new FormControl(0, [Validators.required]),
     nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
     apellido: new FormControl('', [Validators.required, Validators.minLength(3)]),
     edad: new FormControl(0, [Validators.required, Validators.max(110)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    aprobado: new FormControl(false),
+    email: new FormControl('', [Validators.required, Validators.email])
   })
 
   //EDITAR ALUMNO: CARGAR FORMULARIO
-  cargarFormularioEditarAlumno(index: any, alumno: Alumno){
-    this.formularioEditarAlumno.controls.index.setValue(index);
+  cargarFormularioEditarAlumno(alumno: Alumno){
+    this.formularioEditarAlumno.controls.id.setValue(alumno.id);
     this.formularioEditarAlumno.controls.legajo.setValue(alumno.legajo);
     this.formularioEditarAlumno.controls.nombre.setValue(alumno.nombre);
     this.formularioEditarAlumno.controls.apellido.setValue(alumno.apellido);
     this.formularioEditarAlumno.controls.edad.setValue(alumno.edad);
     this.formularioEditarAlumno.controls.email.setValue(alumno.email);
-    this.formularioEditarAlumno.controls.aprobado.setValue(alumno.aprobado);
   }
+
   
-
-  //OBTENER ALUMNOS
-  obtenerAlumnos() {
-    this.alumnoService.obtenerAlumnos()
-    .then((alumnos) => {
-      this.dataSource = alumnos;
-      this.error = false;
-    })
-    .catch((mensajeError) => {
-      this.mensajeError = mensajeError;
-      this.error = true;
-    })
-  }
-
   //AGREGAR ALUMNO
   agregarAlumno() {
     this.subscription.add(
       this.alumnoService.agregarAlumno(this.formularioAgregarAlumno.value).subscribe(
         {
           next: (alumnos) => {
-            this.dataSource = this.dataSource.filter(x => alumnos.includes(x));
+            this.dataSource = alumnos;
             this.error = false;
           },
           error: (mensajeError) => {
             this.mensajeError = mensajeError;
             this.error = true;
+          },
+          complete: () => {
+            this.formularioAgregarAlumno.reset();
+            this.formularioAgregarAlumno.controls.legajo.setErrors(null);
+            this.formularioAgregarAlumno.controls.nombre.setErrors(null);
+            this.formularioAgregarAlumno.controls.apellido.setErrors(null);
+            this.formularioAgregarAlumno.controls.edad.setErrors(null);
+            this.formularioAgregarAlumno.controls.email.setErrors(null);
           }
         }
       )
@@ -96,12 +89,12 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
   }
 
   //ELIMINAR ALUMNO
-  eliminarAlumno(index: any) {
+  eliminarAlumno(id: any) {
     this.subscription.add(
-      this.alumnoService.eliminarAlumno(index).subscribe(
+      this.alumnoService.eliminarAlumno(id).subscribe(
         {
           next: (alumnoEliminado) => {
-            this.dataSource = this.dataSource.filter(x => !alumnoEliminado.includes(x));;
+            this.dataSource = this.dataSource.filter(x => !alumnoEliminado.includes(x));
             this.error = false;
           },
           error: (mensajeError) => {
@@ -114,28 +107,9 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
   }
 
   //EDITAR ALUMNO
-  editarAlumno(index: any) {
+  editarAlumno() {
     this.subscription.add(
-      this.alumnoService.editarAlumno(index, this.formularioEditarAlumno.value).subscribe(
-        {
-          next: (alumnos) => {
-            console.log(alumnos)
-            this.dataSource = this.dataSource.filter(x => alumnos.includes(x));
-            this.error = false;
-          },
-          error: (mensajeError) => {
-            this.mensajeError = mensajeError;
-            this.error = true;
-          }
-        }
-      )
-    )
-  }
-
-  //FILTRAR ALUMNOS
-  filtrarAlumnos(aprobados: boolean) {
-    this.subscription.add(
-      this.alumnoService.filtrarAlumnos(aprobados).subscribe(
+      this.alumnoService.editarAlumno(this.formularioEditarAlumno.value).subscribe(
         {
           next: (alumnos) => {
             this.dataSource = alumnos;
@@ -150,4 +124,21 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
     )
   }
 
+  //OBTENER ALUMNOS
+  obtenerAlumnos() {
+    this.subscription.add(
+      this.alumnoService.obtenerAlumnos().subscribe(
+        {
+          next: (alumnos) => {
+            this.dataSource = alumnos;
+            this.error = false;
+          },
+          error: (mensajeError) => {
+            this.mensajeError = mensajeError;
+            this.error = true;
+          }
+        }
+      )
+    )
+  }
 }

@@ -3,21 +3,22 @@ import { CommonModule } from '@angular/common';
 
 import { ClasesRoutingModule } from './clases-routing.module';
 import { ListaClasesComponent } from './lista-clases/lista-clases.component';
-import { AbmClasesComponent } from './abm-clases/abm-clases.component';
 
+import { MaterialModule } from '../../../modules/material.module';
+import { DirectivesModule } from '../../../shared/directives/directives.module';
 
 @NgModule({
   declarations: [
-    ListaClasesComponent,
-    AbmClasesComponent
+    ListaClasesComponent
   ],
   imports: [
     CommonModule,
-    ClasesRoutingModule
+    ClasesRoutingModule,
+    MaterialModule,
+    DirectivesModule
   ],
   exports: [
-    ListaClasesComponent,
-    AbmClasesComponent
+    ListaClasesComponent
   ]
 })
 export class ClasesModule { }

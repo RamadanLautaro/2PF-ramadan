@@ -18,7 +18,7 @@ import { PipesModule } from '../../../shared/pipes/pipes.module';
     AlumnosRoutingModule,
     MaterialModule,
     DirectivesModule,
-    PipesModule,
+    PipesModule
   ],
   exports: [
     ListaAlumnosComponent

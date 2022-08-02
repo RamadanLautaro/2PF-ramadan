@@ -5,7 +5,7 @@
             <button mat-icon-button class="example-icon" aria-label="navbar" (click)="drawer.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
-            <span>ADMIN PRO</span>
+            <span class="navbar__brand" routerLink="/">ADMIN</span>
             <span class="example-spacer"></span>
         </mat-toolbar>
     </mat-drawer-container>
@@ -14,7 +14,7 @@
         <div class="overflow-x-hidden">
             <div class="row justify-content-center">
                 <div class="col-10 mt-5">
-                    <h1 class="fs-1 fw-light text-center mb-5 purpleText">MENU</h1>
+                    <h1 class="fs-1 fw-light text-center mb-5 mt-5 purpleText">MENU</h1>
                 </div>
                 <div class="col-10 mt-5">
                     <button mat-flat-button color="primary" class="w-100" routerLink="/alumnos">ALUMNOS</button>
@@ -22,8 +22,11 @@
                 <div class="col-10 mt-5">
                     <button mat-flat-button color="primary" class="w-100" routerLink="/cursos">CURSOS</button>
                 </div>
-                <div class="col-10 mt-5">
+                <div class="col-10 mt-5 mb-5">
                     <button mat-flat-button color="primary" class="w-100" routerLink="/clases">CLASES</button>
+                </div>
+                <div class="col-10 mt-5">
+                    <button mat-flat-button class="w-100 btn-secondary" routerLink="/">INICIO</button>
                 </div>
             </div>
         </div>

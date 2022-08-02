@@ -27,10 +27,6 @@
     display: inherit;
 }
 
-.overflow-x-hidden{
-    overflow-x: hidden;
-}
-
 .table_container {
     height: 500px;
     max-height: 500px;
@@ -38,8 +34,4 @@
 
 .aprobado {
     background-color: #00be37;
-}
-
-.textAlumno{
-    line-height: 450px;
 }

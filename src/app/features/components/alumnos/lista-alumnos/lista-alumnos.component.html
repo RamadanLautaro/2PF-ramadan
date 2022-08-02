@@ -7,12 +7,7 @@
         <mat-card-header class="cardHeader mt-2 px-4">
           <mat-card-title class="fs-1 fw-bold m-0 p-2 purpleText">LISTA DE ALUMNOS</mat-card-title>
           <div class="botonesHeader">
-            <mat-radio-group aria-label="Seleccione....." class="px-5 py-2 fw-bold purpleText">
-              <mat-radio-button value="1" color="primary" class="px-2" (click)="obtenerAlumnos()" [checked]="true">TODOS</mat-radio-button>
-              <mat-radio-button value="2" color="primary" class="px-2" (click)="filtrarAlumnos(true)">APROBADOS</mat-radio-button>
-              <mat-radio-button value="3" color="primary" class="px-2" (click)="filtrarAlumnos(false)">DESAPROBADOS</mat-radio-button>
-            </mat-radio-group>
-            <button mat-flat-button color="primary" (click)="drawer.toggle()">+ NUEVO</button>
+            <button mat-flat-button color="primary" (click)="agregar.toggle()">+ NUEVO</button>
           </div>
         </mat-card-header>
         <mat-card-content class="row m-2 mt-3 p-4 table-responsive table_container">
@@ -33,20 +28,13 @@
               <th mat-header-cell *matHeaderCellDef class="purpleText" appFontSize20> Email </th>
               <td mat-cell *matCellDef="let alumno"> {{alumno.email}} </td>
             </ng-container>
-            <ng-container matColumnDef="aprobado">
-              <th mat-header-cell *matHeaderCellDef class="text-center purpleText" appFontSize20> Situación </th>
-              <td mat-cell *matCellDef="let alumno" class="text-center"> 
-                <span *ngIf="alumno.aprobado" class="badge rounded-pill py-2 w-75 aprobado">APROBADO</span>
-                <span *ngIf="!alumno.aprobado" class="badge rounded-pill py-2 w-75 bg-danger">DESAPROBADO</span>
-              </td>
-            </ng-container>
             <ng-container matColumnDef="acciones">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let alumno; let i = index;" class="text-end">
-                <a class="icono text-primary px-2" (click)="cargarFormularioEditarAlumno(i, alumno); editar.toggle();">
+                <a class="icono text-primary px-2" (click)="cargarFormularioEditarAlumno(alumno); editar.toggle();">
                   <mat-icon>edit</mat-icon>
                 </a>
-                <a class="icono text-danger px-2" (click)="eliminarAlumno(i)">
+                <a class="icono text-danger px-2" (click)="eliminarAlumno(alumno.id)">
                   <mat-icon>delete</mat-icon>
                 </a>
               </td>
@@ -58,16 +46,16 @@
       </mat-card>
     </div>
 
-    <!-- AGREGAR -->
-    <mat-drawer #drawer class="col-12">
+    <!-- AGREGAR ALUMNO -->
+    <mat-drawer #agregar class="col-12">
       <div class="row w-100 justify-content-center">
         <div class="col-12 text-center">
             <h1 class="fs-1 fw-light my-5 purpleText">AGREGAR ALUMNO</h1>
         </div>
-        <form [formGroup]="formularioAgregarAlumno" (ngSubmit)="agregarAlumno(); drawer.close();" class="col-4">
+        <form [formGroup]="formularioAgregarAlumno" (ngSubmit)="agregarAlumno(); agregar.toggle();" class="col-4">
             <div class="row">
                 <mat-form-field appearance="outline" class="col-12">
-                    <mat-label>Legajo</mat-label>
+                    <mat-label>Nº Legajo</mat-label>
                     <input type="number" matInput placeholder="Legajo del alumno..." formControlName="legajo">
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-12">
@@ -86,31 +74,27 @@
                     <mat-label>Email</mat-label>
                     <input type="email" matInput placeholder="Email del alumno..." formControlName="email">
                 </mat-form-field>
-                <mat-radio-group color="primary" class="px-5 py-2 fs-6 text-center purpleText" aria-label="Seleccione una opción..." formControlName="aprobado">
-                  <mat-radio-button class="px-3" value="true">APROBADO</mat-radio-button>
-                  <mat-radio-button class="px-3" value="false" [checked]="true">DESAPROBADO</mat-radio-button>
-                </mat-radio-group>
                 <div class="col-6 text-center mt-5">
-                  <button mat-flat-button class="btn-secondary w-100" (click)="drawer.close()">CANCELAR</button>
+                  <button (click)="agregar.toggle()" type="button" class="btn-secondary w-100" mat-flat-button>CANCELAR</button>
                 </div>
                 <div class="col-6 text-center mt-5">
-                  <button [disabled]="formularioAgregarAlumno.invalid" color="primary" mat-flat-button class="w-100" type="submit">GUARDAR</button>
+                  <button [disabled]="formularioAgregarAlumno.invalid" type="submit" class="w-100" color="primary" mat-flat-button>GUARDAR</button>
                 </div>
             </div>
         </form>
       </div>
     </mat-drawer>
     
-    <!-- EDITAR -->
+    <!-- EDITAR ALUMNO -->
     <mat-drawer #editar position="end" class="col-12">
       <div class="row w-100 justify-content-center">
           <div class="col-12 text-center">
               <h1 class="fs-1 fw-light my-5 purpleText">EDITAR ALUMNO</h1>
           </div>
-          <form [formGroup]="formularioEditarAlumno" (ngSubmit)="editarAlumno(this.formularioEditarAlumno.value.index); editar.toggle()" class="col-4">
+          <form [formGroup]="formularioEditarAlumno" (ngSubmit)="editarAlumno(); editar.toggle()" class="col-4">
               <div class="row">
                   <mat-form-field appearance="outline" class="col-12">
-                      <mat-label>Legajo</mat-label>
+                      <mat-label>Nº Legajo</mat-label>
                       <input type="number" matInput placeholder="Legajo del alumno..." formControlName="legajo">
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-12">
@@ -129,15 +113,11 @@
                       <mat-label>Email</mat-label>
                       <input type="email" matInput placeholder="Email del alumno..." formControlName="email">
                   </mat-form-field>
-                  <mat-radio-group color="primary" class="px-5 py-2 fs-6 text-center purpleText" aria-label="Seleccione una opción..." formControlName="aprobado">
-                    <mat-radio-button class="px-3" value="true"  [checked]="formularioEditarAlumno.controls.aprobado.value">APROBADO</mat-radio-button>
-                    <mat-radio-button class="px-3" value="false" [checked]="!formularioEditarAlumno.controls.aprobado.value">DESAPROBADO</mat-radio-button>
-                  </mat-radio-group>
                   <div class="col-6 text-center mt-5">
-                    <button mat-flat-button class="btn-secondary w-100" (click)="drawer.close()">CANCELAR</button>
+                    <button (click)="editar.toggle()" type="button" mat-flat-button class="btn-secondary w-100">CANCELAR</button>
                   </div>
                   <div class="col-6 text-center mt-5">
-                    <button [disabled]="formularioEditarAlumno.invalid" color="primary" mat-flat-button class="w-100" type="submit">GUARDAR</button>
+                    <button [disabled]="formularioEditarAlumno.invalid" type="submit" class="w-100" color="primary" mat-flat-button>GUARDAR</button>
                   </div>
               </div>
           </form>
